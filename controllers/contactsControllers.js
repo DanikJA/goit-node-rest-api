@@ -16,7 +16,7 @@ export const getOneContact = async (req, res) => {
     if (contact) {
       res.status(200).json(contact);
     } else {
-      res.status(404).json({ message: "Контакт не знайдено" });
+      res.status(404).json({ message: "Not found" });
     }
   } catch (error) {
     res.status(500).json({ message: "Error getting contact" });
@@ -30,7 +30,7 @@ export const deleteContact = async (req, res) => {
     if (contact) {
       res.status(200).json({ message: "Contact deleted", contact });
     } else {
-      res.status(404).json({ message: "Контакт не знайдено" });
+      res.status(404).json({ message: "Not found" });
     }
   } catch (error) {
     res.status(500).json({ message: "Помилка при видаленні контакту" });
