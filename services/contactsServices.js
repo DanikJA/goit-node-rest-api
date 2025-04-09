@@ -72,7 +72,7 @@ async function updateContact(contactId, body) {
   }
 }
 
-export {
+export default {
   listContacts,
   getContactById,
   removeContact,
