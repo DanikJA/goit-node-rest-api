@@ -28,7 +28,7 @@ export const deleteContact = async (req, res) => {
     const { id } = req.params;
     const contact = await contactsService.removeContact(id);
     if (contact) {
-      res.status(200).json({ message: "Contact deleted", contact });
+      res.status(200).json(contact);
     } else {
       res.status(404).json({ message: "Not found" });
     }
