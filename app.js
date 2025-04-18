@@ -3,7 +3,9 @@ import morgan from "morgan";
 import cors from "cors";
 import contactsRouter from "./routes/contactsRouter.js";
 import mongoose from "mongoose";
-import DB_HOST from "./config.js";
+import dotenv from "dotenv";
+dotenv.config();
+const { DB_HOST } = process.env;
 
 const app = express();
 
@@ -20,6 +22,7 @@ mongoose
     process.exit(1);
   });
 
+console.log(process.env);
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
