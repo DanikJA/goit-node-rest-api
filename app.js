@@ -3,11 +3,9 @@ import morgan from "morgan";
 import cors from "cors";
 import contactsRouter from "./routes/contactsRouter.js";
 import mongoose from "mongoose";
+import DB_HOST from "./config.js";
 
 const app = express();
-
-const DB_HOST =
-  "mongodb+srv://Danik:StZk9R_v3ajVS.-@cluster0.uhqjmpt.mongodb.net/db-contacts?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose
   .connect(DB_HOST)
