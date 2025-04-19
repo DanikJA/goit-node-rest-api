@@ -13,3 +13,7 @@ export const updateContactSchema = Joi.object({
   email: Joi.string().email(),
   phone: Joi.string().pattern(/^\+?\d{7,15}$/),
 }).min(1);
+
+export const updateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});

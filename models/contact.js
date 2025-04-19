@@ -20,5 +20,12 @@ const contactSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
+contactSchema.post("save", (error, doc, next) => {
+  if (error.name === "ValidationError") {
+    error.status = 400;
+  }
+  next(error);
+});
+
 const Contact = model("contact", contactSchema);
 export default Contact;

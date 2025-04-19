@@ -5,7 +5,9 @@ import contactsRouter from "./routes/contactsRouter.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
-const { DB_HOST, PORT } = process.env;
+
+const PORT = process.env.PORT || 3000;
+const DB_HOST = process.env.DB_HOST;
 
 const app = express();
 
