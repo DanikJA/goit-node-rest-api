@@ -62,3 +62,19 @@ export const updateContact = async (req, res) => {
     res.status(500).json({ message: "Помилка при оновленні контакту" });
   }
 };
+
+export const updateFavorite = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (updateContact) {
+      res.status(200).json(updateContact);
+    } else {
+      res.status(404).json({ message: "Контакт не знайдено" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Помилка при оновленні контакту" });
+  }
+};
