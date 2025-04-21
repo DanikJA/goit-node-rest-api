@@ -1,4 +1,5 @@
 import Contact from "../models/contact.js";
+import mongoose from "mongoose";
 
 export const getAllContacts = async (req, res) => {
   try {
@@ -10,8 +11,13 @@ export const getAllContacts = async (req, res) => {
 };
 
 export const getOneContact = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid contact ID" });
+  }
+
   try {
-    const { id } = req.params;
     const contact = await Contact.findById(id);
     if (contact) {
       res.status(200).json(contact);
@@ -24,8 +30,12 @@ export const getOneContact = async (req, res) => {
 };
 
 export const deleteContact = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid contact ID" });
+  }
   try {
-    const { id } = req.params;
     const contact = await Contact.findByIdAndDelete(id);
     if (contact) {
       res.status(200).json(contact);
@@ -48,8 +58,13 @@ export const createContact = async (req, res) => {
 };
 
 export const updateContact = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid contact ID" });
+  }
+
   try {
-    const { id } = req.params;
     const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -64,8 +79,13 @@ export const updateContact = async (req, res) => {
 };
 
 export const updateFavorite = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid contact ID" });
+  }
+
   try {
-    const { id } = req.params;
     const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
       new: true,
     });
