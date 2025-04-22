@@ -13,10 +13,6 @@ export const getAllContacts = async (req, res) => {
 export const getOneContact = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid contact ID" });
-  }
-
   try {
     const contact = await Contact.findById(id);
     if (contact) {
@@ -32,9 +28,6 @@ export const getOneContact = async (req, res) => {
 export const deleteContact = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid contact ID" });
-  }
   try {
     const contact = await Contact.findByIdAndDelete(id);
     if (contact) {
@@ -60,10 +53,6 @@ export const createContact = async (req, res) => {
 export const updateContact = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid contact ID" });
-  }
-
   try {
     const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
       new: true,
@@ -80,10 +69,6 @@ export const updateContact = async (req, res) => {
 
 export const updateFavorite = async (req, res) => {
   const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: "Invalid contact ID" });
-  }
 
   try {
     const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
