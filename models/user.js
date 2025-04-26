@@ -1,8 +1,13 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
+import { handleMongooseError } from "../handleMongooseError.js";
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+    },
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -25,12 +30,7 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-userSchema.post("save", (error, doc, next) => {
-  if (error.name === "ValidationError") {
-    error.status = 400;
-  }
-  next(error);
-});
+userSchema.post("save", handleMongooseError);
 
 const registerSchema = Joi.object({
   name: Joi.string(),
