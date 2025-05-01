@@ -2,7 +2,8 @@ import Contact from "../models/contact.js";
 
 export const getAllContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find();
+    const { _id: owner } = req.user;
+    const contacts = await Contact.find({ owner });
     res.status(200).json(contacts);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving contacts" });
@@ -41,8 +42,10 @@ export const deleteContact = async (req, res) => {
 
 export const createContact = async (req, res) => {
   try {
+    const { _id: owner } = req.user;
+
     const { name, email, phone } = req.body;
-    const newContact = await Contact.create({ name, email, phone });
+    const newContact = await Contact.create({ name, email, phone, owner });
     res.status(201).json(newContact);
   } catch (error) {
     res.status(500).json({ message: "Помилка при створенні контакту" });
