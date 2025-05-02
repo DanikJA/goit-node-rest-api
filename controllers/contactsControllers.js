@@ -2,8 +2,13 @@ import Contact from "../models/contact.js";
 
 export const getAllContacts = async (req, res) => {
   try {
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
     const { _id: owner } = req.user;
-    const contacts = await Contact.find({ owner });
+    const contacts = await Contact.find({ owner })
+      .skip(skip)
+      .limit(limit)
+      .populate("owner", "name email");
     res.status(200).json(contacts);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving contacts" });
