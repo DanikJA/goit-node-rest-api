@@ -12,7 +12,7 @@ import {
   createContactSchema,
   updateContactSchema,
   updateFavoriteSchema,
-} from "../schemas/contactsSchemas.js";
+} from "../models/contact.js";
 import authenticate from "../middlewares/authenticate.js";
 
 import isValidId from "../middlewares/isValidId.js";
