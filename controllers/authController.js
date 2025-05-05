@@ -3,17 +3,8 @@ import HttpError from "../helpers/HttpError.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-
 dotenv.config();
-
 const { SECRET_KEY } = process.env;
-
-// try {
-//   const { id } = jwt.verify(token, SECRET_KEY);
-//   console.log("Verified user id:", id);
-// } catch (error) {
-//   console.log("JWT error:", error.message);
-// }
 
 export const register = async (req, res, next) => {
   try {
@@ -26,10 +17,15 @@ export const register = async (req, res, next) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({ ...req.body, password: hashPassword });
+    const newUser = await User.create({
+      email,
+      password: hashPassword,
+    });
     res.status(201).json({
-      email: newUser.email,
-      name: newUser.name,
+      user: {
+        email: newUser.email,
+        subscription: newUser.subscription,
+      },
     });
   } catch (error) {
     next(error);
