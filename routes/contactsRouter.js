@@ -14,7 +14,6 @@ import {
   updateFavoriteSchema,
 } from "../models/contact.js";
 import authenticate from "../middlewares/authenticate.js";
-
 import isValidId from "../middlewares/isValidId.js";
 
 const contactsRouter = express.Router();
