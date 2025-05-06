@@ -17,9 +17,10 @@ export const getAllContacts = async (req, res) => {
 
 export const getOneContact = async (req, res) => {
   const { id } = req.params;
+  const owner = req.user._id;
 
   try {
-    const contact = await Contact.findById(id);
+    const contact = await Contact.findOne({ _id: id, owner });
     if (contact) {
       res.status(200).json(contact);
     } else {
@@ -34,7 +35,10 @@ export const deleteContact = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const contact = await Contact.findByIdAndDelete(id);
+    const contact = await Contact.findOneAndDelete({
+      _id: id,
+      owner: req.user._id,
+    });
     if (contact) {
       res.status(200).json(contact);
     } else {
@@ -61,9 +65,11 @@ export const updateContact = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const updateContact = await Contact.findOneAndUpdate(
+      { _id: id, owner: req.user._id },
+      req.body,
+      { new: true }
+    );
     if (updateContact) {
       res.status(200).json(updateContact);
     } else {
@@ -78,9 +84,11 @@ export const updateFavorite = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const updateContact = await Contact.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const updateContact = await Contact.findOneAndUpdate(
+      { _id: id, owner: req.user._id },
+      req.body,
+      { new: true }
+    );
     if (updateContact) {
       res.status(200).json(updateContact);
     } else {
