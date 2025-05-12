@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
 import { handleMongooseError } from "../handleMongooseError.js";
+import gravatar from "gravatar";
 
 const userSchema = new Schema(
   {
@@ -21,6 +22,12 @@ const userSchema = new Schema(
     token: {
       type: String,
       default: null,
+    },
+    avatarURL: {
+      type: String,
+      default: function () {
+        return gravatar.url(this.email, { s: "100", r: "g", d: "identicon" });
+      },
     },
   },
   { versionKey: false, timestamps: true }

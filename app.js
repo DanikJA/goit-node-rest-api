@@ -5,12 +5,26 @@ import contactsRouter from "./routes/contactsRouter.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth.js";
+import multer from "multer";
+import path from "path";
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const DB_HOST = process.env.DB_HOST;
 
 const app = express();
+const tmpDir = path.resolve("tmp");
+
+const multerConfig = multer.diskStorage({
+  destination: tmpDir,
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+export const upload = multer({
+  storage: multerConfig,
+});
 
 mongoose
   .connect(DB_HOST)
@@ -26,6 +40,7 @@ mongoose
   });
 
 console.log(process.env);
+app.use(express.static("public"));
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
