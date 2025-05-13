@@ -3,6 +3,8 @@ import HttpError from "../helpers/HttpError.js";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import path from "path";
+
 dotenv.config();
 const { SECRET_KEY } = process.env;
 
@@ -76,4 +78,35 @@ export const logout = async (req, res) => {
   await User.findByIdAndUpdate(_id, { token: "" });
 
   res.status(204).send();
+};
+
+const avatarsDir = path.resolve("public", "avatars");
+
+export const updateAvatar = async (req, res, next) => {
+  try {
+    const { _id } = req.user;
+    const { path: tempUploadPath, originalname } = req.file;
+
+    // ⬇️ Імпортуємо Jimp правильно
+    const jimpModule = await import("jimp");
+    const Jimp = jimpModule.default;
+
+    const filename = `${_id}_${originalname}`;
+    const finalPath = path.join(avatarsDir, filename);
+
+    // Обробка зображення
+    const image = await Jimp.read(tempUploadPath);
+    await image.resize(250, 250).writeAsync(finalPath);
+    console.log("Jimp:", Jimp);
+    console.log("typeof Jimp.read:", typeof Jimp.read);
+
+    await fs.unlink(tempUploadPath);
+
+    const avatarURL = `/avatars/${filename}`;
+    await User.findByIdAndUpdate(_id, { avatarURL });
+
+    res.status(200).json({ avatarURL });
+  } catch (error) {
+    next(error);
+  }
 };
