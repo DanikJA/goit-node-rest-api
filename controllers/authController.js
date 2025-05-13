@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import path from "path";
+import fs from "fs/promises";
+import { Jimp } from "jimp";
 
 dotenv.config();
 const { SECRET_KEY } = process.env;
@@ -87,20 +89,14 @@ export const updateAvatar = async (req, res, next) => {
     const { _id } = req.user;
     const { path: tempUploadPath, originalname } = req.file;
 
-    // ⬇️ Імпортуємо Jimp правильно
-    const jimpModule = await import("jimp");
-    const Jimp = jimpModule.default;
-
     const filename = `${_id}_${originalname}`;
     const finalPath = path.join(avatarsDir, filename);
 
-    // Обробка зображення
     const image = await Jimp.read(tempUploadPath);
-    await image.resize(250, 250).writeAsync(finalPath);
-    console.log("Jimp:", Jimp);
-    console.log("typeof Jimp.read:", typeof Jimp.read);
 
-    await fs.unlink(tempUploadPath);
+    image.resize({ w: 250, h: 250 });
+
+    await image.write(finalPath);
 
     const avatarURL = `/avatars/${filename}`;
     await User.findByIdAndUpdate(_id, { avatarURL });
