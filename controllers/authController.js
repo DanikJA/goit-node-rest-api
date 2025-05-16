@@ -86,6 +86,10 @@ const avatarsDir = path.resolve("public", "avatars");
 
 export const updateAvatar = async (req, res, next) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Bad Request" });
+    }
+
     const { _id } = req.user;
     const { path: tempUploadPath, originalname } = req.file;
 
@@ -97,6 +101,7 @@ export const updateAvatar = async (req, res, next) => {
     image.resize({ w: 250, h: 250 });
 
     await image.write(finalPath);
+    await fs.unlink(tempUploadPath);
 
     const avatarURL = `/avatars/${filename}`;
     await User.findByIdAndUpdate(_id, { avatarURL });
